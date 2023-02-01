@@ -1,14 +1,13 @@
 import os
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, make_response
 
 from dotenv import load_dotenv
 from flask_dotenv import DotEnv
 from flask_jwt_extended import JWTManager
 from flask_mongoengine import MongoEngine
 
-from services.user_service import UserService
-
+from controllers.login_controller import login_controller
 
 app = Flask(__name__)
 
@@ -26,14 +25,7 @@ app.config['MONGODB_SETTINGS'] = {
 db = MongoEngine(app)
 jwt = JWTManager(app)
 
-@app.route('/steam/login/<string:steam_id>')
-def steam_login(steam_id):  # put application's code here
-    user_service = UserService(db)
-    user = user_service.get_user(steam_id)
-    if user is None:
-        user = user_service.create_user("steam_id", "Snappydue")
-    return jsonify(user)
-
+app.register_blueprint(login_controller)
 
 if __name__ == '__main__':
     app.run()
