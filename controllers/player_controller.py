@@ -1,16 +1,9 @@
 from flask import Blueprint, make_response, jsonify, request
 
 import services.player_service as PlayerService
+import services.steam_service as SteamService
 
 player_controller = Blueprint('player_controller', __name__)
-
-
-@player_controller.route("/player/steam/<string:steam_id>", methods=["GET"])
-def player_steam_login(steam_id):
-    user = PlayerService.get_user(steam_id)
-    if user is None:
-        return make_response(jsonify({}), 404)
-    return jsonify(user)
 
 
 @player_controller.route("/player/steam", methods=["POST"])

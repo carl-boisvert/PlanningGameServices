@@ -8,6 +8,8 @@ from flask_jwt_extended import JWTManager
 from flask_mongoengine import MongoEngine
 
 from controllers.player_controller import player_controller
+from controllers.server_controller import server_controller
+from controllers.login_controller import login_controller
 from middleware.format_response import format_response_middleware
 
 app = Flask(__name__)
@@ -29,6 +31,9 @@ db = MongoEngine(app)
 jwt = JWTManager(app)
 
 app.register_blueprint(player_controller)
+app.register_blueprint(login_controller)
+app.register_blueprint(server_controller)
+
 app.after_request(format_response_middleware)
 
 if __name__ == '__main__':
